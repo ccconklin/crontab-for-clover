@@ -4,10 +4,11 @@ AOS Service Restart Script with Visual Feedback and API Token Validation
 This script stops the AOS service, cleans logs and data, then restarts the service
 and validates the API token by testing the operation-mode endpoint
 
-Version: 2.3.0 (Python)
-Last Updated: 2025-07-07
+Version: 2.4.0 (Python)
+Last Updated: 2026-05-05
 
 Changelog:
+v2.4.0 - Add "intended_version" to the list of files to be skipped during deletion as required in 6.x+
 v2.3.0 - Converted to Python for better maintainability and smaller size
 v2.2.0 - Enhanced API authentication with multiple extraction fallbacks  
 v2.1.0 - Added comprehensive API debugging and HTTP status checking
@@ -634,7 +635,7 @@ class AOSManager:
     def run_full_restart(self, admin_password: str = None) -> bool:
         """Execute complete restart workflow"""
         print("=" * 50)
-        print("    AOS Service Restart Script v2.3.0")
+        print("    AOS Service Restart Script v2.4.0")
         print("=" * 50)
         print()
         
@@ -658,12 +659,12 @@ class AOSManager:
             return False
         
         print()
-        self.print_status("🎉 AOS service restart and configuration completed successfully!")
+        self.print_status("🎉 - v2.4.0 - AOS service restart and configuration completed successfully!")
         print("=" * 50)
         return True
 
 def main():
-    parser = argparse.ArgumentParser(description="AOS Service Restart Script v2.3.0")
+    parser = argparse.ArgumentParser(description="AOS Service Restart Script v2.4.0")
     parser.add_argument("-y", "--yes", action="store_true", help="Skip confirmation prompts")
     parser.add_argument("-e", "--exec", action="store_true", help="Show actual commands being executed")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose output")
