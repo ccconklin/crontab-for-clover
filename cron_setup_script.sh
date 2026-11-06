@@ -16,10 +16,10 @@ if [ ! -f "$SCRIPT_PATH" ]; then
 fi
 
 # Make sure the script is executable
-/usr/bin/os-run-in-read-and-write-root chmod +x "$SCRIPT_PATH"
+/usr/local/bin/os-run-in-read-and-write-root chmod +x "$SCRIPT_PATH"
 
 # Create log directory if it doesn't exist
-/usr/bin/os-run-in-read-and-write-root mkdir -p "$(dirname "$LOG_PATH")"
+/usr/local/bin/os-run-in-read-and-write-root mkdir -p "$(dirname "$LOG_PATH")"
 
 # Backup current crontab
 echo "Backing up current crontab..."
@@ -32,15 +32,15 @@ echo "Creating cron job for AOS restart..."
 cat > /tmp/aos_cron_jobs << 'EOF'
 # AOS Service Restart - Midnight PST (UTC-8) = 8:00 AM UTC
 # Runs during Pacific Standard Time (roughly Nov-Mar)
-0 8 * 11-12,1-3 * /usr/bin/os-run-in-read-and-write-root /usr/bin/python3 /root/aos_restart.py -y --password "REPLACE_PASSWORD" >> /var/log/aos_restart_cron.log 2>&1
+0 8 * 11-12,1-3 * /usr/local/bin/os-run-in-read-and-write-root /usr/bin/python3 /root/aos_restart.py -y --password "REPLACE_PASSWORD" >> /var/log/aos_restart_cron.log 2>&1
 
 # AOS Service Restart - Midnight PDT (UTC-7) = 7:00 AM UTC  
 # Runs during Pacific Daylight Time (roughly Mar-Nov)
-0 7 * 3-10 * /usr/bin/os-run-in-read-and-write-root /usr/bin/python3 /root/aos_restart.py -y --password "REPLACE_PASSWORD" >> /var/log/aos_restart_cron.log 2>&1
+0 7 * 3-10 * /usr/local/bin/os-run-in-read-and-write-root /usr/bin/python3 /root/aos_restart.py -y --password "REPLACE_PASSWORD" >> /var/log/aos_restart_cron.log 2>&1
 EOF
 
 # Replace password placeholder
-/usr/bin/os-run-in-read-and-write-root sed -i "s/REPLACE_PASSWORD/$PASSWORD/g" /tmp/aos_cron_jobs
+/usr/local/bin/os-run-in-read-and-write-root sed -i "s/REPLACE_PASSWORD/$PASSWORD/g" /tmp/aos_cron_jobs
 
 # Add timezone-aware comment
 cat > /tmp/aos_cron_final << EOF
@@ -57,7 +57,7 @@ echo "Installing cron jobs..."
 (crontab -l 2>/dev/null; echo ""; cat /tmp/aos_cron_final) | crontab -
 
 # Clean up temporary files
-/usr/bin/os-run-in-read-and-write-root rm -f /tmp/aos_cron_jobs /tmp/aos_cron_final
+/usr/local/bin/os-run-in-read-and-write-root rm -f /tmp/aos_cron_jobs /tmp/aos_cron_final
 
 echo "✅ Cron jobs installed successfully!"
 echo ""
